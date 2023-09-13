@@ -1,6 +1,6 @@
 package dict.service;
 
-import dict.dataSource.Dictionary;
+import dict.model.Dictionary;
 
 import java.util.ArrayList;
 import java.util.List;

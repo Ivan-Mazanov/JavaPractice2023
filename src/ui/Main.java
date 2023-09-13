@@ -14,11 +14,10 @@ public class Main {
 
             String commandString = new Scanner(System.in).nextLine();
 
-
             String[] commandLine = new String[3];
             String[] splittedCommandLine = commandString.split(" ");
 
-            System.arraycopy(splittedCommandLine, 0, commandLine, 0, splittedCommandLine.length);
+            System.arraycopy(splittedCommandLine, 0, commandLine, 0, 3);
 
             String command = commandLine[0];
             String firstArg = commandLine[1];
@@ -40,7 +39,7 @@ public class Main {
                         /show - show specified dictionary
                         /delete <key> - delete "key - value" pair from specified dictionary
                         /find <key> - find value from specified dictionary
-                        /add  <key> <value> - add "key - value" pair from specified dictionary
+                        /add  <key> <value> - add "key - value" pair in specified dictionary
                         /save - save current dictionary""");
                 case "/names" -> System.out.println(consoleUI.getNames());
                 case "/switch" -> System.out.println(consoleUI.switchSpecifiedDict(firstArg));

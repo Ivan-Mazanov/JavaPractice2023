@@ -1,9 +1,9 @@
 package dict.service;
 
-import dict.dataProvider.CsvFileIO;
-import dict.dataProvider.FileIO;
-import dict.dataProvider.FileType;
-import dict.dataSource.Dictionary;
+import dict.io.CsvFileIO;
+import dict.io.FileIO;
+import dict.io.FileType;
+import dict.model.Dictionary;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
-package dict.dataProvider;
+package dict.io;
 
-import dict.dataSource.Dictionary;
+import dict.model.Dictionary;
 
 import java.io.*;
 import java.util.HashMap;

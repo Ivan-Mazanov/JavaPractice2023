@@ -1,6 +1,6 @@
 package ui;
 
-import dict.dataProvider.FileType;
+import dict.io.FileType;
 import dict.service.DictService;
 
 import java.util.List;

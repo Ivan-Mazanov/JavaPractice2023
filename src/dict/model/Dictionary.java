@@ -1,4 +1,4 @@
-package dict.dataSource;
+package dict.model;
 
 import java.util.HashMap;
 import java.util.function.Predicate;

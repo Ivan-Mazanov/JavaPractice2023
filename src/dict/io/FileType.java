@@ -1,4 +1,4 @@
-package dict.dataProvider;
+package dict.io;
 
 public enum FileType {
     CSV
