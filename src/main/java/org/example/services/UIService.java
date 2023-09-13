@@ -104,9 +104,7 @@ public class UIService implements IUIService {
     private   void getDictionary() {
         System.out.println("\n2. Просмотр словаря:");
         var dictionary = dictonaryService.getAllWords(UserData.getSelectedLanguage());
-        dictionary.forEach((k, v) -> {
-            System.out.printf("%s - %s\n", k, v);
-        });
+        dictionary.forEach((k, v) -> System.out.printf("%s - %s\n", k, v));
     }
 
     private   void getWord() {
@@ -141,7 +139,12 @@ public class UIService implements IUIService {
         if (russianTranslation == null) {
             return;
         }
-        dictonaryService.addWordToDictionary(foreignLanguage, russianTranslation, UserData.getSelectedLanguage());
+       if(dictonaryService.addWordToDictionary(foreignLanguage, russianTranslation, UserData.getSelectedLanguage())){
+           System.out.println("Слово добавлено");
+       }
+       else{
+           System.err.println("Ошибка при добавлении слова");
+       }
 
     }
 
