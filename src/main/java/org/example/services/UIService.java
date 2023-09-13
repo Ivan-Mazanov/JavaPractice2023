@@ -1,4 +1,9 @@
-package org.example;
+package org.example.services;
+
+import org.example.enums.Language;
+import org.example.UserData;
+import org.example.interfaces.IDictonaryService;
+import org.example.interfaces.IUIService;
 
 import java.util.Scanner;
 
@@ -22,7 +27,8 @@ public class UIService implements IUIService {
                     menuItem = Integer.parseInt(str);
                 }
             } catch (Exception ex) {
-
+                   System.err.println("Ошибка выбора пункта меню");
+                   continue;
             }
             switch (menuItem) {
                 case 1:
@@ -42,6 +48,10 @@ public class UIService implements IUIService {
                     break;
                 case 0:
                     programRunning = false;
+                    break;
+                default:
+                    System.err.println("Пункт меню не найден");
+                    break;
 
             }
 
@@ -51,6 +61,7 @@ public class UIService implements IUIService {
     private  void renderMenu() {
 
         System.out.println("\nМеню:");
+        System.out.println("Текущий выбранный язык - " + UserData.getSelectedLanguage());
         System.out.println("1. Выбор языка словаря");
         System.out.println("2. Просмотр словаря:");
         System.out.println("3. Поиск слова:");
@@ -77,9 +88,10 @@ public class UIService implements IUIService {
             }
             languageNum = Integer.parseInt(str);
         } catch (Exception ex) {
-
+             System.err.println("Ошибка выбора языка");
+             return;
         }
-        if(languageNum < languages.length-1 && languageNum >= 0) {
+        if(languageNum < languages.length && languageNum >= 0) {
             UserData.setSelectedLanguage(languages[languageNum]);
         }
         else
@@ -110,7 +122,7 @@ public class UIService implements IUIService {
         if (word == null) {
             System.out.println("Слово не найдено");
         } else {
-            System.out.printf("Перевод слова %s: %s", str, word);
+            System.out.printf("Перевод слова %s: %s\n", str, word);
         }
 
     }
@@ -138,9 +150,14 @@ public class UIService implements IUIService {
         System.out.print("Введите удаляемое слово: ");
         var str = readLine();
         if (str == null) {
-            return;
+           return;
         }
-        dictonaryService.deleteFromDictionary(str, UserData.getSelectedLanguage());
+       if(dictonaryService.deleteFromDictionary(str, UserData.getSelectedLanguage())) {
+           System.out.println("Слово удалено");
+       }
+       else {
+           System.err.println("Слово не найдено");
+       }
     }
 
     private  String readLine() {

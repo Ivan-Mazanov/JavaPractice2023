@@ -1,4 +1,6 @@
-package org.example;
+package org.example.interfaces;
+
+import org.example.enums.Language;
 
 import java.util.SortedMap;
 
@@ -7,7 +9,7 @@ public interface IDictonaryService {
 
     String getTranslation(String word, Language language);
 
-    void deleteFromDictionary(String word, Language language);
+    boolean deleteFromDictionary(String word, Language language);
 
     boolean addWordToDictionary(String foreignLanguage, String russianLanguage, Language language);
 }

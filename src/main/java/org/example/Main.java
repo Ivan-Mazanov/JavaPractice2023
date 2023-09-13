@@ -1,6 +1,7 @@
 package org.example;
 
-import java.util.Scanner;
+import org.example.interfaces.IUIService;
+import org.example.services.UIService;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.

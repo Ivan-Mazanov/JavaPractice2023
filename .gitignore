@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+.idea
+/.idea/
+/src/main/resources/dictionaries/

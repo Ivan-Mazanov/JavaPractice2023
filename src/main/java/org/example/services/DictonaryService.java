@@ -1,17 +1,13 @@
-package org.example;
+package org.example.services;
 
-import javax.xml.stream.events.Characters;
+import org.example.interfaces.IDictonaryService;
+import org.example.enums.Language;
+
 import java.io.*;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
 public class DictonaryService implements IDictonaryService {
@@ -49,12 +45,16 @@ public class DictonaryService implements IDictonaryService {
     }
 
     @Override
-    public void deleteFromDictionary(String word, Language language) {
+    public boolean deleteFromDictionary(String word, Language language) {
         var words = getAllWords(language);
         if (words.get(word) != null) {
             words.remove(word);
             var file = getDictianaryFileByLanguage(language);
             writeMapToFile(words, file);
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

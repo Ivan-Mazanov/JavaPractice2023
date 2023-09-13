@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.enums.Language;
+
 public class UserData {
     private static Language selectedLanguage = Language.English;
 
