@@ -39,4 +39,5 @@ build/
 
 .idea
 /.idea/
-/src/main/resources/dictionaries/*
+/src/main/resources/dictionaries/
+/src/main/resources/dictionaries/*.txt
