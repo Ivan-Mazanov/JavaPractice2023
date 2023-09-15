@@ -1,6 +1,6 @@
 package org.example.services;
 
-import org.example.interfaces.IDictonaryService;
+import org.example.interfaces.IDictionaryService;
 import org.example.enums.Language;
 
 import java.io.*;
@@ -9,12 +9,18 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
-
-public class DictonaryService implements IDictonaryService {
+/**
+ * @author zolobov.ea.kst
+ */
+public class DictionaryService implements IDictionaryService {
     private final String BASE_PATH = "/src/main/resources/dictionaries/";
     private final String CSV_COLUMNS_DELIMITER = ";";
     private final String CSV_ROWS_DELIMITER = "\n";
 
+    /**
+     * @param language язык
+     * @return Сортированная по ключу мапа с словами и их переводами
+     */
     @Override
     public SortedMap<String, String> getAllWords(Language language) {
         var file = getDictianaryFileByLanguage(language);
@@ -37,13 +43,22 @@ public class DictonaryService implements IDictonaryService {
         return result;
     }
 
+    /**
+     * @param word слово-ключ
+     * @param language язык
+     * @return перевод слова
+     */
     @Override
     public String getTranslation(String word, Language language) {
         var words = getAllWords(language);
-        var result = words.get(word);
-        return result;
+        return words.get(word);
     }
 
+    /**
+     * @param word слово-ключ
+     * @param language язык
+     * @return true если слово было удалено, false если не было удалено
+     */
     @Override
     public boolean deleteFromDictionary(String word, Language language) {
         var words = getAllWords(language);
@@ -52,12 +67,17 @@ public class DictonaryService implements IDictonaryService {
             var file = getDictianaryFileByLanguage(language);
             writeMapToFile(words, file);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
+    /**
+     * @param foreignLanguage иностранное слово-ключ
+     * @param russianLanguage перевод (слово-значение)
+     * @param language язык
+     * @return true если слово добавлено,false если нет
+     */
     @Override
     public boolean addWordToDictionary(String foreignLanguage, String russianLanguage, Language language) {
 
@@ -73,6 +93,7 @@ public class DictonaryService implements IDictonaryService {
             }
         } catch (Exception exception) {
             System.err.println("Ошибка создания файла");
+            return false;
         }
         var words = getAllWords(language);
         if ((words.get(foreignLanguage)) != null) {
@@ -83,11 +104,19 @@ public class DictonaryService implements IDictonaryService {
         return writeMapToFile(words, file);
     }
 
+    /**
+     * @param language язык
+     * @return файл словаря
+     */
     private File getDictianaryFileByLanguage(Language language) {
         var filePath = Path.of(new File("").getAbsolutePath(), BASE_PATH, language.getFileName());
         return filePath.toFile();
     }
 
+    /**
+     * @param basePath путь для создания папки
+     * @return путь к папке с словарями
+     */
     private String createFolderIfNotExists(String basePath) {
         var folderPath = Path.of(new File("").getAbsolutePath(), basePath);
         var folder = folderPath.toFile();
@@ -97,7 +126,11 @@ public class DictonaryService implements IDictonaryService {
         return folderPath.toString();
     }
 
-
+    /**
+     * @param map мапа с иностранным словом в виде ключа и переводом в виде значения
+     * @param file файл для записи
+     * @return true если запись успешна,false если была ошибка
+     */
     private boolean writeMapToFile(Map<String, String> map, File file) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
             map.forEach((k, v) -> {
@@ -105,6 +138,7 @@ public class DictonaryService implements IDictonaryService {
                 try {
                     bw.write(record);
                 } catch (IOException e) {
+
                     throw new UncheckedIOException(e);
                 }
             });
@@ -115,10 +149,13 @@ public class DictonaryService implements IDictonaryService {
         }
     }
 
+    /**
+     * @param str строка
+     * @param language язык
+     * @return true если строка соответствует ограничениям языка,false если не соответствует
+     */
     private boolean isRespondRestrictions(String str, Language language) {
         Matcher matcher = language.getPattern().matcher(str);
         return matcher.matches();
     }
-
-
 }

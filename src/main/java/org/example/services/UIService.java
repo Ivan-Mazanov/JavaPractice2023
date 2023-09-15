@@ -2,23 +2,26 @@ package org.example.services;
 
 import org.example.enums.Language;
 import org.example.UserData;
-import org.example.interfaces.IDictonaryService;
+import org.example.interfaces.IDictionaryService;
 import org.example.interfaces.IUIService;
-
 import java.util.Scanner;
-
+/**
+ * @author zolobov.ea.kst
+ */
 public class UIService implements IUIService {
-    private final IDictonaryService dictonaryService = new DictonaryService();
+    private final IDictionaryService dictonaryService = new DictionaryService();
 
-
+    /**
+     * Метод начала пользовательской сессии
+     */
     @Override
-    public void startSession(){
+    public void startSession() {
         boolean programRunning = true;
 
 
         while (programRunning) {
             renderMenu();
-            int menuItem = Integer.MAX_VALUE;
+            int menuItem;
             try {
                 var str = readLine();
                 if (str == null) {
@@ -27,8 +30,8 @@ public class UIService implements IUIService {
                     menuItem = Integer.parseInt(str);
                 }
             } catch (Exception ex) {
-                   System.err.println("Ошибка выбора пункта меню");
-                   continue;
+                System.err.println("Ошибка выбора пункта меню");
+                continue;
             }
             switch (menuItem) {
                 case 1:
@@ -58,7 +61,11 @@ public class UIService implements IUIService {
 
         }
     }
-    private  void renderMenu() {
+
+    /**
+     * Метод отрисовки меню
+     */
+    private void renderMenu() {
 
         System.out.println("\nМеню:");
         System.out.println("Текущий выбранный язык - " + UserData.getSelectedLanguage());
@@ -72,7 +79,10 @@ public class UIService implements IUIService {
 
     }
 
-    private   void changeLanguage() {
+    /**
+     * Метод отвечающий за пункт меню с сменой языка
+     */
+    private void changeLanguage() {
         System.out.println("\n1. Выбор языка словаря");
         System.out.println("Доступные языки:\n");
         var languages = Language.values();
@@ -80,7 +90,7 @@ public class UIService implements IUIService {
             System.out.printf("%s. %s\n", i, languages[i].getCyrillicName());
         }
         System.out.print("Введите значение: ");
-        int languageNum = Integer.MAX_VALUE;
+        int languageNum;
         try {
             var str = readLine();
             if (str == null) {
@@ -88,26 +98,30 @@ public class UIService implements IUIService {
             }
             languageNum = Integer.parseInt(str);
         } catch (Exception ex) {
-             System.err.println("Ошибка выбора языка");
-             return;
+            System.err.println("Ошибка выбора языка");
+            return;
         }
-        if(languageNum < languages.length && languageNum >= 0) {
+        if (languageNum < languages.length && languageNum >= 0) {
             UserData.setSelectedLanguage(languages[languageNum]);
-        }
-        else
-        {
+        } else {
             System.err.println("Выбран несуществующий язык словаря. Попробуйте ещё раз.\n");
             changeLanguage();
         }
     }
 
-    private   void getDictionary() {
+    /**
+     * Метод отвечающий за пункт меню с выводом словаря
+     */
+    private void getDictionary() {
         System.out.println("\n2. Просмотр словаря:");
         var dictionary = dictonaryService.getAllWords(UserData.getSelectedLanguage());
         dictionary.forEach((k, v) -> System.out.printf("%s - %s\n", k, v));
     }
 
-    private   void getWord() {
+    /**
+     * Метод отвечающий за пункт меню с поиском слова
+     */
+    private void getWord() {
         System.out.println("\n3. Поиск слова:");
         System.out.print("Введите слово: ");
 
@@ -122,10 +136,12 @@ public class UIService implements IUIService {
         } else {
             System.out.printf("Перевод слова %s: %s\n", str, word);
         }
-
     }
 
-    private   void addWord() {
+    /**
+     * Метод отвечающий за пункт меню с добавленим слова
+     */
+    private void addWord() {
         System.out.println("\n4. Добавление слова:");
         System.out.print("Введите слово: ");
 
@@ -139,31 +155,35 @@ public class UIService implements IUIService {
         if (russianTranslation == null) {
             return;
         }
-       if(dictonaryService.addWordToDictionary(foreignLanguage, russianTranslation, UserData.getSelectedLanguage())){
-           System.out.println("Слово добавлено");
-       }
-       else{
-           System.err.println("Ошибка при добавлении слова");
-       }
+        if (dictonaryService.addWordToDictionary(foreignLanguage, russianTranslation, UserData.getSelectedLanguage())) {
+            System.out.println("Слово добавлено");
+        } else {
+            System.err.println("Ошибка при добавлении слова");
+        }
 
     }
 
-    private   void deleteWord() {
+    /**
+     * Метод отвечающий за пункт меню с удалением слова
+     */
+    private void deleteWord() {
         System.out.println("\n5. Удаление слова:");
         System.out.print("Введите удаляемое слово: ");
         var str = readLine();
         if (str == null) {
-           return;
+            return;
         }
-       if(dictonaryService.deleteFromDictionary(str, UserData.getSelectedLanguage())) {
-           System.out.println("Слово удалено");
-       }
-       else {
-           System.err.println("Слово не найдено");
-       }
+        if (dictonaryService.deleteFromDictionary(str, UserData.getSelectedLanguage())) {
+            System.out.println("Слово удалено");
+        } else {
+            System.err.println("Слово не найдено");
+        }
     }
 
-    private  String readLine() {
+    /**
+     * @return строка считанная при вводе
+     */
+    private String readLine() {
         Scanner scanner = new Scanner(System.in);
         var str = scanner.next();
         if (str != null && !str.isBlank()) {
